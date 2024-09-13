@@ -3,10 +3,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
+from routers.auth import router as auth_router
 
 app = FastAPI(title="Markdown-Web-Notes-API")
+app.include_router(auth_router)
 
-origins = [settings.FRONTEND_URL]
+origins = [settings.FRONTEND_URL, "127.0.0.1", "localhost"]
 
 app.add_middleware(
     CORSMiddleware,

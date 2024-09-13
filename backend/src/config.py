@@ -15,6 +15,10 @@ class Settings(BaseSettings):
 
     FRONTEND_URL: str
 
+    SESSION_COOKIE_NAME: str
+    SESSION_COOKIE_EXPR: int
+    COOKIE_PARAMS: dict = {"secure": False, "samesite": "lax", "httponly": True}
+
     @property
     def mongo_dsn(self) -> MongoDsn:
         return f"mongodb+srv://{self.MONGO_USER}:{self.MONGO_PASS}@{self.MONGO_HOST}"
