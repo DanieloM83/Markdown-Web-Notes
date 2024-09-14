@@ -20,10 +20,10 @@ class UserRepository:
         result = await self.coll.find_one({"username": username})
         if not result:
             return None
-        return UserSchema(**result)
+        return UserSchema.model_construct(**result)
 
     async def get_user_by_id(self, id_: Union[str, ObjectId, bytes]) -> UserSchema | None:
         result = await self.coll.find_one({"_id": ObjectId(id_)})
         if not result:
             return None
-        return UserSchema(**result)
+        return UserSchema.model_construct(**result)

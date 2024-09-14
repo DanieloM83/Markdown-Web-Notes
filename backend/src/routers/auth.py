@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Response, Cookie, Depends, HTTPException
+from fastapi import APIRouter, Response, Cookie, Depends
 
 from services.auth import AuthService
 from schemas.user import UserCredentialsSchema, UserSchema
+from exceptions.auth import NotLoggedInError
 from config import settings
 
 router = APIRouter(prefix="/auth", tags=["authorization"])
@@ -12,7 +13,7 @@ async def get_user(
         service: AuthService = Depends(AuthService)
 ) -> UserSchema | None:
     if session_id is None:
-        raise HTTPException(401, "You are not logged in.")
+        raise NotLoggedInError()
     return await service.get_user(session_id)
 
 
@@ -38,7 +39,7 @@ async def logout(
         service: AuthService = Depends(AuthService)
 ):
     if session_id is None:
-        raise HTTPException(401, "You are not logged in.")
+        raise NotLoggedInError()
     await service.logout(session_id)
     response.delete_cookie(key=settings.SESSION_COOKIE_NAME,
                            **settings.COOKIE_PARAMS)
