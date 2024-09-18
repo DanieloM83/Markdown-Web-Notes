@@ -6,9 +6,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
 from routers.auth import router as auth_router
+from routers.note import router as note_router
 
 app = FastAPI(title="Markdown-Web-Notes-API")
 app.include_router(auth_router)
+app.include_router(note_router)
 
 
 @app.exception_handler(RequestValidationError)
