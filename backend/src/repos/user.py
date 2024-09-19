@@ -1,9 +1,8 @@
-from typing import Union
-
 from bson import ObjectId
 from fastapi import Depends
 from motor.motor_asyncio import AsyncIOMotorCollection
 
+from schemas.default import ObjectIdSupported
 from schemas.user import UserSchema, UserWithoutIDSchema
 from dependencies import get_mongo_base
 
@@ -22,7 +21,7 @@ class UserRepository:
             return None
         return UserSchema.model_construct(**result)
 
-    async def get_user_by_id(self, id_: Union[str, ObjectId, bytes]) -> UserSchema | None:
+    async def get_user_by_id(self, id_: ObjectIdSupported) -> UserSchema | None:
         result = await self.coll.find_one({"_id": ObjectId(id_)})
         if not result:
             return None

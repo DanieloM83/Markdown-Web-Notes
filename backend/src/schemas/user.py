@@ -7,9 +7,10 @@ class UsernameSchema(BaseModel):
     username: str
 
     @field_validator("username")
-    def username_validator(cls, value):
+    @classmethod
+    def username_validator(cls, value: str) -> str:
         if len(value) > 20:
-            raise ValueError("Wrong username format: Username must be shorter than 20 characters!")
+            raise ValueError("Wrong username format: Username must be shorter than or equal to 20 characters!")
 
         return value
 
@@ -18,7 +19,8 @@ class PasswordSchema(BaseModel):
     password: str
 
     @field_validator("password")
-    def password_validator(cls, value):
+    @classmethod
+    def password_validator(cls, value: str) -> str:
         if len(value) < 8:
             raise ValueError("Wrong password format: Password must be longer than or equal to 8 characters!")
 
@@ -38,7 +40,8 @@ class HashedPasswordSchema(BaseModel):
     password: str
 
     @field_validator("password")
-    def password_validator(cls, value):
+    @classmethod
+    def password_validator(cls, value: str) -> str:
         return value
 
 

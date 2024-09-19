@@ -6,6 +6,7 @@ from repos.note import NoteRepository
 from schemas.default import ObjectIdSupported
 from schemas.note import NoteWithoutIdSchema, NoteWithoutMetaSchema, NoteSchema, PartialNoteWithoutMetaSchema
 from schemas.user import UserSchema
+from exceptions.note import AuthorVerifyingError
 
 
 class NoteService:
@@ -14,8 +15,8 @@ class NoteService:
 
     async def verify_author(self, note_id: ObjectIdSupported, author_id: ObjectIdSupported) -> None:
         note = await self.repo.get_note_by_id(note_id)
-        if note.author_id != author_id.__str__():
-            raise ValueError("Forbidden.")
+        if not note or note.author_id != author_id.__str__():
+            raise AuthorVerifyingError()
 
     async def create_note(self, note: NoteWithoutMetaSchema, user: UserSchema) -> NoteSchema:
         note = NoteWithoutIdSchema(**note.model_dump(), author_id=user.id)
