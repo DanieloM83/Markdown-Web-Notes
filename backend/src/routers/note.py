@@ -1,11 +1,13 @@
 from typing import List
 
 from fastapi import APIRouter, Depends
+from bson.errors import InvalidId
 
 from schemas.note import NoteSchema, NoteWithoutMetaSchema, PartialNoteWithoutMetaSchema
 from routers.auth import get_user
 from schemas.user import UserSchema
 from services.note import NoteService
+from exceptions.note import InvalidObjectIdError
 
 router = APIRouter(prefix="/notes", tags=["note handlers"])
 
@@ -36,8 +38,11 @@ async def update_note(
         user: UserSchema = Depends(get_user),
         service: NoteService = Depends(NoteService)
 ):
-    result = await service.update_note(id_, note, user)
-    return {"success": result}
+    try:
+        result = await service.update_note(id_, note, user)
+        return {"success": result}
+    except InvalidId:
+        raise InvalidObjectIdError
 
 
 @router.delete("/{id_}")
@@ -46,5 +51,8 @@ async def delete_note(
         user: UserSchema = Depends(get_user),
         service: NoteService = Depends(NoteService)
 ):
-    result = await service.delete_note(id_, user)
-    return {"success": result}
+    try:
+        result = await service.delete_note(id_, user)
+        return {"success": result}
+    except InvalidId:
+        raise InvalidObjectIdError

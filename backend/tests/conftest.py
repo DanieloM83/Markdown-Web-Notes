@@ -35,3 +35,8 @@ def restore_bases():
 @pytest.fixture
 def client():
     return TestClient(app)
+
+
+@pytest.fixture
+def user_creds():
+    return {"username": "fakeuser123", "password": "Fakeuser123"}
