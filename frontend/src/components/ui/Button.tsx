@@ -1,24 +1,17 @@
-import {FC} from "react";
+import { FC } from "react";
 
 interface ButtonProps {
-	text?: string,
-	callback?(): React.MouseEventHandler<HTMLDivElement>,
-	disabled?: boolean,
-};
-
-const Button: FC<ButtonProps> = ({text = "", callback, disabled = false, ...props}) => {
-
-	return (
-		<div 
-			onClick={disabled ? undefined : callback}
-			role="button"
-			aria-disabled={disabled}
-			style={{ cursor: disabled ? 'not-allowed' : 'pointer' }} 
-			{...props} 
-		>
-			<p>{text}</p>
-		</div>
-	);
+  text?: string;
+  callback?(): React.MouseEventHandler<HTMLDivElement>;
+  disabled?: boolean;
 }
+
+const Button: FC<ButtonProps> = ({ text = "", callback, disabled = false, ...props }) => {
+  return (
+    <div {...props} onClick={disabled ? undefined : callback} className={`custom_button ${props.className ? props.className : ""}`} role="button" aria-disabled={disabled} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
+      <p>{text}</p>
+    </div>
+  );
+};
 
 export default Button;
