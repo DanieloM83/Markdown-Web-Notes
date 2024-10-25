@@ -1,11 +1,9 @@
 import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FieldErrors } from "react-hook-form";
-import { UserCredentialsSchema as CredentialsSchema } from "../../services/auth";
+import { UserCredentialsType as CredentialsFormData, UserCredentialsSchema as CredentialsSchema } from "../../services/auth";
 import { Button } from "./";
 import styles from "./CredentialsForm.module.css";
-
-type CredentialsFormData = z.infer<typeof CredentialsSchema>;
 
 interface CredentialsFormProps {
   onSubmit: (data: CredentialsFormData) => void;
@@ -23,10 +21,10 @@ const CredentialsForm: FC<CredentialsFormProps> = ({ onSubmit, buttonText = "Sub
     mode: "onChange",
   });
 
-  const errors = formStateErrors && internalErrors;
+  const errors = { ...internalErrors, ...formStateErrors };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} {...props}>
+    <form {...props}>
       <div className={styles.form_input}>
         <input {...register("username")} placeholder="username" />
         {errors.username && <p className={`error ${styles.error}`}>{errors.username.message}</p>}
