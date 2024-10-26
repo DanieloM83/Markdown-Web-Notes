@@ -9,20 +9,20 @@ import { AuthContext } from "../../providers";
 interface RegisterProps {}
 
 const Register: FC<RegisterProps> = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     setError,
     formState: { errors },
-  } = useForm();
+  } = useForm<UserCredentialsType>();
 
-  const registerButtonHandler: SubmitHandler<T> = async (data: UserCredentialsType) => {
+  const registerButtonHandler: SubmitHandler<UserCredentialsType> = async (data: UserCredentialsType) => {
     let response = await register(data);
-    if (!response.success) return setError("submit", { type: "custom", message: response.message });
+    if (!response.success) return setError("root", { type: "custom", message: response.message });
     let response2 = await login(data);
-    if (!response2.success) return setError("submit", { type: "custom", message: response2.message });
+    if (!response2.success) return setError("root", { type: "custom", message: response2.message });
     let response3 = await getCurrentUser();
-    if (!response3.success) return setError("submit", { type: "custom", message: response3.message });
+    if (!response3.success) return setError("root", { type: "custom", message: response3.message });
     setUser(response3.data);
   };
   const linkHandler: React.MouseEventHandler<HTMLParagraphElement> = () => {
@@ -35,7 +35,7 @@ const Register: FC<RegisterProps> = () => {
       <Background />
       <div className={styles.auth_content_container}>
         <h1 className={styles.title}>Sign Up</h1>
-        <CredentialsForm onSubmit={registerButtonHandler} buttonText="Register" formStateErrors={errors} className={styles.auth_form} />
+        <CredentialsForm onFormSubmit={registerButtonHandler} buttonText="Register" formStateErrors={errors} className={styles.auth_form} />
         <div className={styles.link}>
           <p onClick={linkHandler}>Already have an account?</p>
         </div>

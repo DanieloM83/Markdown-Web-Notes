@@ -62,9 +62,17 @@ body {
   font-size: 20px;
   cursor: pointer;
 }
+.header .profile-container {
+  display: flex;
+  align-items: center;
+
+  p {
+    margin-left: 10px;
+  }
+  cursor: pointer;
+}
 .header .profile-image {
   width: 25px;
-  cursor: pointer;
 }
 
 input {

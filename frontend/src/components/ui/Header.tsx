@@ -8,22 +8,25 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-  const logoHandler: React.MouseEvent<HTMLElement> = () => {
+  const logoHandler: React.MouseEventHandler<HTMLElement> = () => {
     navigate("/");
   };
 
-  const profileImageHandler: React.MouseEvent<HTMLElement> = () => {
+  const profileBlockHandler: React.MouseEventHandler<HTMLElement> = () => {
     navigate("/login");
   };
-  console.log(user);
+
   return (
     <header className="header">
       <p className="logo" onClick={logoHandler}>
-        {user?.username}
+        WebNotes
       </p>
-      <img className="profile-image" src={profileImage} alt="profile-img" loading="lazy" onClick={profileImageHandler} />
+      <div className="profile-container" onClick={profileBlockHandler}>
+        <img className="profile-image" src={profileImage} alt="profile-img" loading="lazy" />
+        <p>{user?.username ?? "Profile"}</p>
+      </div>
     </header>
   );
 };

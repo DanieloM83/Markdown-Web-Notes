@@ -6,7 +6,7 @@ interface AuthContextType {
   setUser: (user: UserData | undefined) => void;
 }
 
-export const AuthContext = createContext<AuthContextType>();
+export const AuthContext = createContext<AuthContextType>({ user: undefined, setUser: () => {} });
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserData | undefined>(undefined);

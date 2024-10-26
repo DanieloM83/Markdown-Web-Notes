@@ -8,7 +8,7 @@ interface HomeProps {}
 const Home: FC<HomeProps> = () => {
   const navigate = useNavigate();
 
-  const startButtonHandler: React.MouseEvent<HTMLElement> = () => {
+  const startButtonHandler: React.MouseEventHandler<HTMLElement> = () => {
     navigate("/playground");
   };
 

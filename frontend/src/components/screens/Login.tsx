@@ -24,6 +24,8 @@ const Login: FC<LoginProps> = () => {
     setUser(response2.data);
   };
 
+  console.log(user);
+
   const linkHandler: React.MouseEventHandler<HTMLParagraphElement> = () => {
     navigate("/register");
   };
@@ -34,7 +36,7 @@ const Login: FC<LoginProps> = () => {
       <Background />
       <div className={styles.auth_content_container}>
         <h1 className={styles.title}>Sign In</h1>
-        <CredentialsForm onSubmit={loginButtonHandler} buttonText="Login" formStateErrors={errors} className={styles.auth_form} />
+        <CredentialsForm onFormSubmit={loginButtonHandler} buttonText="Login" formStateErrors={errors} className={styles.auth_form} />
         <div className={styles.link}>
           <p onClick={linkHandler}>Don't have an account?</p>
         </div>

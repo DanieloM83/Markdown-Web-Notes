@@ -1,17 +1,17 @@
-import { FC } from "react";
+import { FC, HTMLAttributes } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FieldErrors } from "react-hook-form";
 import { UserCredentialsType as CredentialsFormData, UserCredentialsSchema as CredentialsSchema } from "../../services/auth";
 import { Button } from "./";
 import styles from "./CredentialsForm.module.css";
 
-interface CredentialsFormProps {
-  onSubmit: (data: CredentialsFormData) => void;
+interface CredentialsFormProps extends HTMLAttributes<HTMLFormElement> {
+  onFormSubmit: (data: CredentialsFormData) => void;
   buttonText?: string;
   formStateErrors?: FieldErrors<CredentialsFormData>;
 }
 
-const CredentialsForm: FC<CredentialsFormProps> = ({ onSubmit, buttonText = "Submit", formStateErrors, ...props }) => {
+const CredentialsForm: FC<CredentialsFormProps> = ({ onFormSubmit, buttonText = "Submit", formStateErrors, ...props }) => {
   const {
     register,
     handleSubmit,
@@ -34,8 +34,8 @@ const CredentialsForm: FC<CredentialsFormProps> = ({ onSubmit, buttonText = "Sub
         {errors.password && <p className={`error ${styles.error}`}>{errors.password.message}</p>}
       </div>
 
-      <Button className={styles.form_button} callback={handleSubmit(onSubmit)} text={buttonText} disabled={Object.keys(errors).length !== 0} />
-      {errors.submit && <p className={`error ${styles.error}`}>{errors.submit.message}</p>}
+      <Button className={styles.form_button} callback={handleSubmit(onFormSubmit)} text={buttonText} disabled={Object.keys(errors).length !== 0} />
+      {errors.root && <p className={`error ${styles.error}`}>{errors.root.message}</p>}
     </form>
   );
 };
