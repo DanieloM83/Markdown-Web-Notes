@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     SESSION_COOKIE_NAME: str
     SESSION_COOKIE_EXPR: int
-    COOKIE_PARAMS: dict = {"secure": False, "samesite": "lax", "httponly": True}
+    COOKIE_PARAMS: dict = {"secure": True, "samesite": "None", "httponly": True}
 
     @property
     def mongo_dsn(self) -> MongoDsn:

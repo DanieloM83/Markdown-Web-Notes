@@ -21,7 +21,7 @@ def validation_error_handler(request: Request, exc: RequestValidationError):
     )
 
 
-origins = [settings.FRONTEND_URL, "127.0.0.1", "localhost"]
+origins = [settings.FRONTEND_URL, "http://127.0.0.1:5173", "http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,

@@ -23,13 +23,13 @@ async def login(
         data: UserCredentialsSchema,
         service: AuthService = Depends(AuthService)
 ):
-    session_id = await service.login(data)
+    user_id, session_id = await service.login(data)
     response.set_cookie(settings.SESSION_COOKIE_NAME,
                         session_id,
                         **settings.COOKIE_PARAMS,
                         expires=settings.SESSION_COOKIE_EXPR)
     response.status_code = 200
-    return response
+    return {"id": user_id.__str__()}
 
 
 @router.post("/logout")
@@ -44,7 +44,7 @@ async def logout(
     response.delete_cookie(key=settings.SESSION_COOKIE_NAME,
                            **settings.COOKIE_PARAMS)
     response.status_code = 200
-    return response
+    return {"success": True}
 
 
 @router.post("/register")
@@ -53,9 +53,9 @@ async def register(
         service: AuthService = Depends(AuthService)
 ):
     user_id = await service.register(data)
-    return {"id": user_id}
+    return {"id": user_id.__str__()}
 
 
 @router.get("/current_user")
 async def get_current_user(user: UserSchema = Depends(get_user)):
-    return {"username": user.username}
+    return {"username": user.username, "id": user.id.__str__()}

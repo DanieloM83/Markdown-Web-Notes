@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Tuple
 from uuid import uuid4
 
 from fastapi import Depends
@@ -35,7 +35,7 @@ class AuthService:
         self.repo = repository
         self.redis = redis
 
-    async def login(self, credentials: UserCredentialsSchema) -> str:
+    async def login(self, credentials: UserCredentialsSchema) -> Tuple[str, str]:
         user = await self.repo.get_user_by_username(credentials.username)
         # Check does user exist:
         if user is None:
@@ -46,7 +46,7 @@ class AuthService:
         # Create new session:
         session_id = generate_session()
         await self.redis.set(session_id, user.id.__str__(), ex=settings.SESSION_COOKIE_EXPR)
-        return session_id
+        return user.id, session_id
 
     async def logout(self, session_id: str) -> None:
         await self.redis.delete(session_id)
