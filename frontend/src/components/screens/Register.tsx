@@ -24,6 +24,7 @@ const Register: FC<RegisterProps> = () => {
     let response3 = await getCurrentUser();
     if (!response3.success) return setError("root", { type: "custom", message: response3.message });
     setUser(response3.data);
+    navigate("/");
   };
   const linkHandler: React.MouseEventHandler<HTMLParagraphElement> = () => {
     navigate("/login");

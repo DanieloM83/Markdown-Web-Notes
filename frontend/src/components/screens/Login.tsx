@@ -18,14 +18,12 @@ const Login: FC<LoginProps> = () => {
 
   const loginButtonHandler: SubmitHandler<UserCredentialsType> = async (data: UserCredentialsType) => {
     let response = await login(data);
-    if (!response.success) return setError("submit", { type: "custom", message: response.message });
+    if (!response.success) return setError("root", { type: "custom", message: response.message });
     let response2 = await getCurrentUser();
-    if (!response2.success) return setError("submit", { type: "custom", message: response2.message });
+    if (!response2.success) return setError("root", { type: "custom", message: response2.message });
     setUser(response2.data);
+    navigate("/");
   };
-
-  console.log(user);
-
   const linkHandler: React.MouseEventHandler<HTMLParagraphElement> = () => {
     navigate("/register");
   };

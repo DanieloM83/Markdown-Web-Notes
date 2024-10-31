@@ -15,7 +15,7 @@ export const register = async (credentials: UserCredentialsType) => {
 };
 
 export const logout = async () => {
-  const response = await postQuery<LogoutResponseData, {}>("/auth/register", {});
+  const response = await postQuery<LogoutResponseData, {}>("/auth/logout", {});
   console.log(response);
   return response;
 };

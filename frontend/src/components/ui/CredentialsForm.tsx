@@ -21,8 +21,8 @@ const CredentialsForm: FC<CredentialsFormProps> = ({ onFormSubmit, buttonText = 
     mode: "onChange",
   });
 
-  const errors = { ...internalErrors, ...formStateErrors };
-
+  const errors = internalErrors;
+  
   return (
     <form {...props}>
       <div className={styles.form_input}>
@@ -35,7 +35,7 @@ const CredentialsForm: FC<CredentialsFormProps> = ({ onFormSubmit, buttonText = 
       </div>
 
       <Button className={styles.form_button} callback={handleSubmit(onFormSubmit)} text={buttonText} disabled={Object.keys(errors).length !== 0} />
-      {errors.root && <p className={`error ${styles.error}`}>{errors.root.message}</p>}
+      {formStateErrors.root && <p className={`error ${styles.error}`}>{formStateErrors.root.message}</p>}
     </form>
   );
 };
