@@ -1,12 +1,14 @@
 import { FC, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { profileImage } from "../../assets/images";
-
+import ProfileModal from "./ProfileModal.tsx";
 import { AuthContext } from "../../providers";
+import { useModal } from "../../hooks";
 
 interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
+  const profileModalProps = useModal();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
@@ -15,7 +17,8 @@ const Header: FC<HeaderProps> = () => {
   };
 
   const profileBlockHandler: React.MouseEventHandler<HTMLElement> = () => {
-    navigate("/login");
+	if (user) profileModalProps.onOpen();
+    else navigate("/login");
   };
 
   return (
@@ -27,6 +30,8 @@ const Header: FC<HeaderProps> = () => {
         <img className="profile-image" src={profileImage} alt="profile-img" loading="lazy" />
         <p>{user?.username ?? "Profile"}</p>
       </div>
+
+      <ProfileModal {...profileModalProps} />
     </header>
   );
 };
