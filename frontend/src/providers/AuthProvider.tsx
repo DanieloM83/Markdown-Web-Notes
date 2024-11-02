@@ -17,7 +17,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (response.success) setUser(response.data);
       else console.log(`Failed to fetch user: ${response.message}`);
 
-	  //setUser({username: "testUser", id: "abc"});
+	  setUser({username: "testUser", id: "abc"});
     };
 
     fetchUser();

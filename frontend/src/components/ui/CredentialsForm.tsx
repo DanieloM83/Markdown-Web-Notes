@@ -22,15 +22,15 @@ const CredentialsForm: FC<CredentialsFormProps> = ({ onFormSubmit, buttonText = 
   });
 
   const errors = internalErrors;
-  
+
   return (
     <form {...props}>
       <div className={styles.form_input}>
-        <input {...register("username")} placeholder="username" />
+        <input {...register("username")} placeholder="username" className={styles.input} />
         {errors.username && <p className={`error ${styles.error}`}>{errors.username.message}</p>}
       </div>
       <div className={styles.form_input}>
-        <input {...register("password")} placeholder="password" type="password" />
+        <input {...register("password")} placeholder="password" className={styles.input} type="password" />
         {errors.password && <p className={`error ${styles.error}`}>{errors.password.message}</p>}
       </div>
 
