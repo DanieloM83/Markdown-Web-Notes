@@ -1,5 +1,15 @@
 .desk {
+  position: relative;
+
   height: 100vh;
 
   background-color: var(--background-color);
+}
+
+.desk > .note {
+  z-index: 50;
+  width: 100px;
+  height: 100px;
+
+  /* transition: 0.5s ease; */
 }

@@ -1,10 +1,18 @@
 import { FC } from "react";
-import styles from "./NotesDesk.module.css";
+import { Note, NotesDeskElement, styles } from ".";
 
-interface NotesDeskProps {}
+interface NotesDeskProps {
+  notes: Note[];
+}
 
-const NotesDesk: FC<NotesDeskProps> = () => {
-  return <div className={styles.desk}></div>;
+const NotesDesk: FC<NotesDeskProps> = ({ notes }) => {
+  return (
+    <div className={styles.desk}>
+      {notes.map((note) => (
+        <NotesDeskElement data={note} key={note.id} />
+      ))}
+    </div>
+  );
 };
 
 export default NotesDesk;

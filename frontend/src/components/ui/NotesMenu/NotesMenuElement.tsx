@@ -8,11 +8,15 @@ interface NotesMenuElementProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const NotesMenuElement: FC<NotesMenuElementProps> = ({ data, selected, handleSelect, ...props }) => {
+  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    data.color = event.target.value;
+  };
+
   return (
-    <div {...props}>
-      <input type="checkbox" checked={selected} onChange={() => handleSelect(data.id)} />
-      <p>{data.title}</p>
-      <input type="color" value={data.color} />
+    <div {...props} className={`${styles.menu_element} ${selected ? styles.selected : ""}`}>
+      <input type="checkbox" checked={selected} onChange={() => handleSelect(data.id)} className={styles.checkbox} />
+      <p className={styles.title}>{data.title}</p>
+      <input type="color" value={data.color} className={styles.color_selector} onChange={handleColorChange} />
     </div>
   );
 };

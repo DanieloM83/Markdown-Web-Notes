@@ -33,7 +33,7 @@ const NotesMenu: FC<NotesMenuProps> = ({ notes, isMenuHided, setIsMenuHided }) =
     <div className={`${styles.notes_menu} ${isMenuHided ? styles.hided : ""}`}>
       <div className={styles.notes_menu_header}>
         <div className={styles.control_buttons}>
-          <input type="checkbox" className={styles.checkbox} />
+          <input type="checkbox" className={styles.checkbox} checked={selectedItems.size == notes.length} onChange={handleSelectAll} />
           <Button text="-" callback={() => {}} className={`${styles.button} ${styles.del}`} />
           <Button text="+" callback={() => {}} className={`${styles.button} ${styles.add}`} />
         </div>
