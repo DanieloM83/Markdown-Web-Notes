@@ -43,3 +43,21 @@ export const postQuery = async <T, U>(endpoint: string, data: U, config?: AxiosR
     return normalizeError(error);
   }
 };
+
+export const deleteQuery = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+  try {
+    const response = await axiosInstance.delete<T>(endpoint, config);
+    return normalizeSuccess(response);
+  } catch (error) {
+    return normalizeError(error);
+  }
+};
+
+export const patchQuery = async <T, U>(endpoint: string, data: U, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+  try {
+    const response = await axiosInstance.patch<T>(endpoint, data, config);
+    return normalizeSuccess(response);
+  } catch (error) {
+    return normalizeError(error);
+  }
+};

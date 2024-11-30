@@ -2,14 +2,14 @@ import { FC } from "react";
 import { Note, NotesDeskElement, styles } from ".";
 
 interface NotesDeskProps {
-  notes: Note[];
+  notesList: Note[];
 }
 
-const NotesDesk: FC<NotesDeskProps> = ({ notes }) => {
+const NotesDesk: FC<NotesDeskProps> = ({ notesList }) => {
   return (
     <div className={styles.desk}>
-      {notes.map((note) => (
-        <NotesDeskElement data={note} key={note.id} />
+      {notesList.map((note) => (
+        <NotesDeskElement data={note} key={note._id} />
       ))}
     </div>
   );
