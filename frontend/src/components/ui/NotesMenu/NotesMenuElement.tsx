@@ -1,5 +1,6 @@
-import { FC, HTMLAttributes } from "react";
+import { FC, HTMLAttributes, useContext } from "react";
 import { Note, styles } from ".";
+import { NotesContext } from "../../../providers";
 
 interface NotesMenuElementProps extends HTMLAttributes<HTMLDivElement> {
   data: Note;
@@ -8,13 +9,17 @@ interface NotesMenuElementProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const NotesMenuElement: FC<NotesMenuElementProps> = ({ data, selected, handleSelect, ...props }) => {
+  const { notesList, setNotesList } = useContext(NotesContext);
+
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    data.color = event.target.value;
+    const newColor = event.target.value;
+    const newNotes = notesList.map((note) => (note._id === data._id ? { ...note, color: newColor } : note));
+    setNotesList(newNotes);
   };
 
   return (
     <div {...props} className={`${styles.menu_element} ${selected ? styles.selected : ""}`}>
-      <input type="checkbox" checked={selected} onChange={() => handleSelect(data.id)} className={styles.checkbox} />
+      <input type="checkbox" checked={selected} onChange={() => handleSelect(data._id)} className={styles.checkbox} />
       <p className={styles.title}>{data.title}</p>
       <input type="color" value={data.color} className={styles.color_selector} onChange={handleColorChange} />
     </div>

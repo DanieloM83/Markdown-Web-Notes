@@ -1,7 +1,8 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
 import { NotesMenuElement, Note, styles } from ".";
 import { Button } from "../";
 import { createNote, deleteNote, NoteWithoutMetaType } from "../../../services/note";
+import { NotesContext } from "../../../providers";
 
 const NEW_NOTE_TEMPLATE: NoteWithoutMetaType = {
   title: "New note",
@@ -14,28 +15,18 @@ const NEW_NOTE_TEMPLATE: NoteWithoutMetaType = {
 interface NotesMenuProps {
   isMenuHided: boolean;
   setIsMenuHided: Dispatch<SetStateAction<boolean>>;
-  notesList: Note[];
-  setNotesList: Dispatch<SetStateAction<Note[]>>;
 }
 
-const NotesMenu: FC<NotesMenuProps> = ({ isMenuHided, setIsMenuHided, notesList, setNotesList }) => {
+const NotesMenu: FC<NotesMenuProps> = ({ isMenuHided, setIsMenuHided }) => {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const { notesList, setNotesList } = useContext(NotesContext);
 
   const handleSelectAll = () => {
-    if (selectedItems.size === notesList.length) {
-      setSelectedItems(new Set());
-    } else {
-      const newSelectedItems = new Set(notesList.map((note) => note._id));
-      setSelectedItems(newSelectedItems);
-    }
+    selectedItems.size == notesList.length ? setSelectedItems(new Set()) : setSelectedItems(new Set(notesList.map((note) => note._id)));
   };
   const handleSelectItem = (id: string) => {
     const newSelectedItems = new Set(selectedItems);
-    if (newSelectedItems.has(id)) {
-      newSelectedItems.delete(id);
-    } else {
-      newSelectedItems.add(id);
-    }
+    selectedItems.has(id) ? newSelectedItems.delete(id) : newSelectedItems.add(id);
     setSelectedItems(newSelectedItems);
   };
 
@@ -48,16 +39,9 @@ const NotesMenu: FC<NotesMenuProps> = ({ isMenuHided, setIsMenuHided, notesList,
   };
 
   const handleDelButton = async () => {
-    let newNotesList: Note[] = [];
-    notesList.forEach(async (note) => {
-      if (selectedItems.has(note._id)) {
-        await deleteNote(note._id);
-      } else {
-        newNotesList.push(note);
-      }
-    });
-
-    setNotesList(newNotesList);
+    const newNotes: Note[] = notesList.filter((note) => !selectedItems.has(note._id));
+    selectedItems.forEach(async (id) => await deleteNote(id));
+    setNotesList(newNotes);
     setSelectedItems(new Set());
   };
 

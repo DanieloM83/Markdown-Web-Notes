@@ -13,3 +13,7 @@
 
   /* transition: 0.5s ease; */
 }
+
+.note > .title {
+  padding: 2px;
+}
