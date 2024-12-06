@@ -11,9 +11,31 @@
   width: 100px;
   height: 100px;
 
-  /* transition: 0.5s ease; */
+  display: flex;
+  flex-direction: column;
 }
 
-.note > .title {
+.note > .title,
+.note > .buttons {
   padding: 2px;
+  flex-shrink: 0;
+}
+
+.note > .description {
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.note > .buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+  .display_image {
+    margin-right: 5px;
+  }
 }

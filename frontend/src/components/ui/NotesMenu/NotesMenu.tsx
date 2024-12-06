@@ -18,8 +18,7 @@ interface NotesMenuProps {
 }
 
 const NotesMenu: FC<NotesMenuProps> = ({ isMenuHided, setIsMenuHided }) => {
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const { notesList, setNotesList } = useContext(NotesContext);
+  const { notesList, setNotesList, selectedItems, setSelectedItems } = useContext(NotesContext);
 
   const handleSelectAll = () => {
     selectedItems.size == notesList.length ? setSelectedItems(new Set()) : setSelectedItems(new Set(notesList.map((note) => note._id)));

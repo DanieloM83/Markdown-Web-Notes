@@ -1,6 +1,9 @@
-import { FC, useRef } from "react";
+import { FC, useContext, useRef } from "react";
 import { useDraggable } from "../../../hooks";
 import { Note, styles } from ".";
+import { NotesContext } from "../../../providers";
+import { deleteImage, displayImage, editImage } from "../../../assets/images";
+import { deleteNote } from "../../../services/note";
 
 interface NotesDeskElementProps {
   data: Note;
@@ -15,18 +18,40 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
   };
 
   const divRef = useRef<HTMLDivElement>(null);
-  const { handleDragStart } = useDraggable(divRef, data.coordinates[0], data.coordinates[1]);
+  const { notesList, setNotesList, selectedItems, setSelectedItems } = useContext(NotesContext);
+  const { handleDragStart, handleDragEnd } = useDraggable(divRef, data.coordinates[0], data.coordinates[1]);
 
-  const handleDragStartExt = (event: React.DragEvent<HTMLElement>) => {
-    console.log(data._id);
-    handleDragStart(event);
+  const handleDragEndExt = (event: React.DragEvent<HTMLElement>) => {
+    const x = divRef.current?.style.left || "0.00%";
+    const y = divRef.current?.style.top || "0.00%";
+    const newCords: [number, number] = [parseFloat(x.replace("%", "")) / 100 || 0, parseFloat(y.replace("%", "")) / 100 || 0];
+    const newNotes = notesList.map((note) => (note._id === data._id ? { ...note, coordinates: newCords } : note));
+    setNotesList(newNotes);
+    handleDragEnd(event);
+  };
+
+  const handleDelButton = async () => {
+    const response = await deleteNote(data._id);
+    if (!response.success) {
+      console.log(`Failed to delete note ${data._id}: ${response.message}`);
+      return;
+    }
+    selectedItems.delete(data._id);
+    setSelectedItems(selectedItems);
+    setNotesList(notesList.filter((note) => note._id != data._id));
   };
 
   return (
-    <div className={styles.note} ref={divRef} style={positionStyle} onDragStart={handleDragStartExt}>
+    <div className={styles.note} ref={divRef} style={positionStyle} onDragStart={handleDragStart} onDragEnd={handleDragEndExt}>
       <div className={styles.title}>{data.title}</div>
-      <div className={styles.content}>{data.content}</div>
-      <div className={styles.buttons}></div>
+      <div className={styles.description}>{data.description}</div>
+      <div className={styles.buttons}>
+        <img src={deleteImage} onClick={handleDelButton} />
+        <div>
+          <img className={styles.display_image} src={displayImage} />
+          <img src={editImage} />
+        </div>
+      </div>
     </div>
   );
 };

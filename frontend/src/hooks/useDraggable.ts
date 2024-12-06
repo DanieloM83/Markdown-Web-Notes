@@ -1,8 +1,14 @@
 import { useState, useCallback, useEffect, RefObject, useMemo } from "react";
 
+interface UseDraggableReturn {
+  handleDragStart: (event: React.DragEvent<HTMLElement>) => void;
+  handleDragEnd: (event: React.DragEvent<HTMLElement>) => void;
+  handleDrag: (event: React.DragEvent<HTMLElement>) => void;
+}
+
 type Position = { x: number; y: number };
 
-const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0) => {
+const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0): UseDraggableReturn => {
   const [position, setPosition] = useState<Position>({ x: initialX, y: initialY });
   const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 });
 
@@ -42,7 +48,7 @@ const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0
     [dragOffset, ref, EMPTYIMG]
   );
 
-  const handleDragEnd = useCallback(() => {}, []);
+  const handleDragEnd = useCallback((event: React.DragEvent<HTMLElement>) => {}, []);
 
   useEffect(() => {
     const element = ref.current;
@@ -50,11 +56,11 @@ const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0
 
     element.draggable = true;
     element.addEventListener("drag", handleDrag as unknown as EventListener);
-    element.addEventListener("dragend", handleDragEnd as EventListener);
+    element.addEventListener("dragend", handleDragEnd as unknown as EventListener);
 
     return () => {
       element.removeEventListener("drag", handleDrag as unknown as EventListener);
-      element.removeEventListener("dragend", handleDragEnd as EventListener);
+      element.removeEventListener("dragend", handleDragEnd as unknown as EventListener);
     };
   }, [handleDrag, handleDragEnd, ref]);
 
@@ -66,7 +72,7 @@ const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0
     }
   }, [position, ref]);
 
-  return { handleDragStart };
+  return { handleDragStart, handleDragEnd, handleDrag };
 };
 
 export default useDraggable;

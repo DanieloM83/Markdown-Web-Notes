@@ -4,15 +4,18 @@ import { getNotes, Note, PartialNoteWithoutMetaType, updateNote } from "../servi
 interface NotesContextType {
   notesList: Note[];
   setNotesList: (notesList: Note[]) => void;
+  selectedItems: Set<string>;
+  setSelectedItems: (selectedItems: Set<string>) => void;
 }
 
 interface modifiedNotesType {
   [id: string]: PartialNoteWithoutMetaType;
 }
 
-export const NotesContext = createContext<NotesContextType>({ notesList: [], setNotesList: () => {} });
+export const NotesContext = createContext<NotesContextType>({ notesList: [], setNotesList: () => {}, selectedItems: new Set<string>(), setSelectedItems: () => {} });
 
 export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [notesList, setNotesList] = useState<Note[]>([]);
   const [oldNotesList, setOldNotesList] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -42,7 +45,8 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const parseNotesChanges = (): modifiedNotesType => {
     let changedNotes: modifiedNotesType = {};
     notesList.forEach((note) => {
-      const oldNote = oldNotesList.find((oldNote) => oldNote._id === note._id) as Note;
+      const oldNote = oldNotesList.find((oldNote) => oldNote._id === note._id) || note;
+      if (oldNote == undefined) setOldNotesList((prev) => [...prev, note]);
       for (const key in note) {
         if (oldNote[key as keyof Note] !== note[key as keyof Note]) {
           changedNotes[note._id] = changedNotes[note._id] || {};
@@ -70,5 +74,5 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return <div>Loading...</div>;
   }
 
-  return <NotesContext.Provider value={{ notesList, setNotesList }}>{children}</NotesContext.Provider>;
+  return <NotesContext.Provider value={{ notesList, setNotesList, selectedItems, setSelectedItems }}>{children}</NotesContext.Provider>;
 };
