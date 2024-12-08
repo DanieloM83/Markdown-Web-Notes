@@ -7,12 +7,12 @@ interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
   disabled?: boolean;
 }
 
-const Button: FC<ButtonProps> = ({ text = "", callback, disabled = false, ...props }) => {
+const Button: FC<ButtonProps> = ({ text = "", callback, disabled = false, className = "", ...props }) => {
   return (
     <div
       {...props}
       onClick={disabled ? undefined : callback}
-      className={`${styles.button} ${props.className ? props.className : ""}`}
+      className={`${styles.button} ${className || ""}`}
       role="button"
       aria-disabled={disabled}
       style={{ cursor: disabled ? "not-allowed" : "pointer" }}

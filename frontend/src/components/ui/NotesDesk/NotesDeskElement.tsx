@@ -3,7 +3,8 @@ import { useDraggable } from "../../../hooks";
 import { Note, styles } from ".";
 import { NotesContext } from "../../../providers";
 import { deleteImage, displayImage, editImage } from "../../../assets/images";
-import { deleteNote } from "../../../services/note";
+import { deleteNote, NoteTitleSchema, NoteDescriptionSchema } from "../../../services/note";
+import { EditableTextArea, EditableTextInput } from "../";
 
 interface NotesDeskElementProps {
   data: Note;
@@ -41,10 +42,20 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
     setNotesList(notesList.filter((note) => note._id != data._id));
   };
 
+  const unpdateNotesList = (data: Note) => setNotesList(notesList.map((note) => (note._id === data._id ? data : note)));
+
+  const handleEditTitle = (newTitle: string) => {
+    if (data.title == newTitle) return;
+    unpdateNotesList({ ...data, title: newTitle });
+  };
+  const handleEditDescription = (newDesc: string) => {
+    if (data.description == newDesc) return;
+    unpdateNotesList({ ...data, description: newDesc });
+  };
   return (
     <div className={styles.note} ref={divRef} style={positionStyle} onDragStart={handleDragStart} onDragEnd={handleDragEndExt}>
-      <div className={styles.title}>{data.title}</div>
-      <div className={styles.description}>{data.description}</div>
+      <EditableTextInput className={styles.title} value={data.title} callback={handleEditTitle} validator={NoteTitleSchema} />
+      <EditableTextArea className={styles.description} value={data.description} callback={handleEditDescription} validator={NoteDescriptionSchema} />
       <div className={styles.buttons}>
         <img src={deleteImage} onClick={handleDelButton} />
         <div>

@@ -5,3 +5,4 @@ export { default as CredentialsForm } from "./CredentialsForm.tsx";
 export { default as ProfileModal } from "./ProfileModal.tsx";
 export { NotesMenu } from "./NotesMenu";
 export { default as NotesDesk } from "./NotesDesk/NotesDesk.tsx";
+export { EditableTextInput, EditableTextArea } from "./EditableText.tsx";

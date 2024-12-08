@@ -111,8 +111,11 @@
   margin-left: 10px;
   color: var(--text3-color);
   font-weight: bold;
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 20px;
+  max-width: 210px;
 }
 
 .color_selector {

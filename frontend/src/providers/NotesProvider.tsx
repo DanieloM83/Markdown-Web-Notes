@@ -23,7 +23,7 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   useEffect(() => {
     const fetchNotes = async () => {
       let response = await getNotes();
-      if (response.success) {
+      if (response.success && response.data) {
         setNotesList(response.data);
         setOldNotesList(response.data);
       } else console.log(`Failed to fetch notes: ${response.message}`);
@@ -35,6 +35,13 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   }, []);
 
   useEffect(() => {
+    if (notesList.length !== oldNotesList.length) {
+      const newNotes = notesList.filter((note) => !oldNotesList.includes(note));
+      const listToUpdate = [...oldNotesList];
+      listToUpdate.push(...newNotes);
+      setOldNotesList(listToUpdate.filter((note) => notesList.includes(note)));
+    }
+
     const interval = setInterval(() => {
       sendModifiedNotesToServer();
     }, 10000);
@@ -44,16 +51,17 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const parseNotesChanges = (): modifiedNotesType => {
     let changedNotes: modifiedNotesType = {};
-    notesList.forEach((note) => {
-      const oldNote = oldNotesList.find((oldNote) => oldNote._id === note._id) || note;
-      if (oldNote == undefined) setOldNotesList((prev) => [...prev, note]);
+
+    for (const note of notesList) {
+      const oldNote = oldNotesList.find((oldNote) => oldNote._id === note._id) as Note;
       for (const key in note) {
         if (oldNote[key as keyof Note] !== note[key as keyof Note]) {
           changedNotes[note._id] = changedNotes[note._id] || {};
-          changedNotes[note._id][key] = note[key as keyof Note];
+          changedNotes[note._id][key as keyof PartialNoteWithoutMetaType] = note[key as keyof Note] as any;
         }
       }
-    });
+    }
+
     return changedNotes;
   };
 
