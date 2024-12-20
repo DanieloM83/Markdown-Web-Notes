@@ -1,0 +1,25 @@
+.content {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+
+  background-color: #000000;
+}
+
+.editor {
+  height: 100vh;
+}
+.preview {
+  height: 100vh;
+  flex: 1;
+}
+
+.divider {
+  width: 5px;
+  background-color: #000000;
+  cursor: ew-resize;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}

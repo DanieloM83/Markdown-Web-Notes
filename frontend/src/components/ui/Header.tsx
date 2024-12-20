@@ -17,7 +17,7 @@ const Header: FC<HeaderProps> = () => {
   };
 
   const profileBlockHandler: React.MouseEventHandler<HTMLElement> = () => {
-	if (user) profileModalProps.onOpen();
+    if (user) profileModalProps.onOpen();
     else navigate("/login");
   };
 

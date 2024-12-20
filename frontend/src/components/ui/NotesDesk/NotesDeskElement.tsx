@@ -5,6 +5,7 @@ import { NotesContext } from "../../../providers";
 import { deleteImage, displayImage, editImage } from "../../../assets/images";
 import { deleteNote, NoteTitleSchema, NoteDescriptionSchema } from "../../../services/note";
 import { EditableTextArea, EditableTextInput } from "../";
+import { useNavigate } from "react-router-dom";
 
 interface NotesDeskElementProps {
   data: Note;
@@ -19,6 +20,7 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
   };
 
   const divRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const { notesList, setNotesList, selectedItems, setSelectedItems } = useContext(NotesContext);
   const { handleDragStart, handleDragEnd } = useDraggable(divRef, data.coordinates[0], data.coordinates[1]);
 
@@ -52,6 +54,7 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
     if (data.description == newDesc) return;
     unpdateNotesList({ ...data, description: newDesc });
   };
+
   return (
     <div className={styles.note} ref={divRef} style={positionStyle} onDragStart={handleDragStart} onDragEnd={handleDragEndExt}>
       <EditableTextInput className={styles.title} value={data.title} callback={handleEditTitle} validator={NoteTitleSchema} />
@@ -59,8 +62,8 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
       <div className={styles.buttons}>
         <img src={deleteImage} onClick={handleDelButton} />
         <div>
-          <img className={styles.display_image} src={displayImage} />
-          <img src={editImage} />
+          <img className={styles.display_image} src={displayImage} onClick={() => navigate(`/display/${data._id}`)} />
+          <img src={editImage} onClick={() => navigate(`/edit/${data._id}`)} />
         </div>
       </div>
     </div>

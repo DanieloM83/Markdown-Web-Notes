@@ -1,5 +1,6 @@
-import React, { createContext, useEffect, useState, ReactNode } from "react";
+import React, { createContext, useEffect, useState, ReactNode, useContext } from "react";
 import { getNotes, Note, PartialNoteWithoutMetaType, updateNote } from "../services/note";
+import { AuthContext } from "./AuthProvider";
 
 interface NotesContextType {
   notesList: Note[];
@@ -19,6 +20,7 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [notesList, setNotesList] = useState<Note[]>([]);
   const [oldNotesList, setOldNotesList] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -32,7 +34,7 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     };
 
     fetchNotes();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (notesList.length !== oldNotesList.length) {

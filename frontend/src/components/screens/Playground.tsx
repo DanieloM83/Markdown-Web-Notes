@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Header, NotesMenu, NotesDesk } from "../ui";
-import { AuthContext, NotesProvider } from "../../providers";
+import { AuthContext } from "../../providers";
 import { useNavigate } from "react-router-dom";
 import styles from "./Playground.module.css";
 
@@ -18,14 +18,14 @@ const Playground: FC<PlaygroundProps> = () => {
   }, [user]);
 
   return (
-    <NotesProvider>
+    <>
       <Header />
       <div className={`${styles.container} ${isMenuHided ? styles.expanded : ""}`}>
         <NotesMenu {...{ isMenuHided, setIsMenuHided }} />
         <NotesDesk />
       </div>
       <div className={styles.background}></div>
-    </NotesProvider>
+    </>
   );
 };
 
