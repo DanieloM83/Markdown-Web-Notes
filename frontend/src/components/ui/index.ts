@@ -7,3 +7,5 @@ export { NotesMenu } from "./NotesMenu";
 export { default as NotesDesk } from "./NotesDesk/NotesDesk.tsx";
 export { EditableTextInput, EditableTextArea } from "./EditableText.tsx";
 export { default as MarkdownRenderer } from "./MarkdownRenderer.tsx";
+export { default as Loading } from "./Loading.tsx";
+export { default as BackFooter } from "./BackFooter.tsx";

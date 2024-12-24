@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
 import { getCurrentUser, UserData } from "../services/auth";
+import { Loading } from "../components/ui";
 
 interface AuthContextType {
   user: UserData | undefined;
@@ -25,7 +26,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading loadingText="Fetching user data..." />;
   }
 
   return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;

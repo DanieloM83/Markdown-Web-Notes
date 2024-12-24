@@ -2,7 +2,7 @@ import { FC, useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import styles from "./Edit.module.css";
-import { MarkdownRenderer } from "../ui";
+import { BackFooter, MarkdownRenderer } from "../ui";
 import { NotesContext } from "../../providers";
 
 interface EditProps {}
@@ -46,6 +46,7 @@ const Edit: FC<EditProps> = () => {
       <Editor value={content} className={styles.editor} width={`${leftWidth}px`} language="markdown" theme="vs-dark" onChange={handleChange} />
       <div className={styles.divider} onMouseDown={handleMouseDown}></div>
       <MarkdownRenderer content={content} className={styles.preview} />
+      <BackFooter />
     </div>
   );
 };

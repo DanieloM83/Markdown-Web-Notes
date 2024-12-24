@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
+import { Dispatch, FC, SetStateAction, useContext } from "react";
 import { NotesMenuElement, Note, styles } from ".";
 import { Button } from "../";
 import { createNote, deleteNote, NoteWithoutMetaType } from "../../../services/note";
@@ -32,11 +32,10 @@ const NotesMenu: FC<NotesMenuProps> = ({ isMenuHided, setIsMenuHided }) => {
   const handleAddButton = async () => {
     const response = await createNote(NEW_NOTE_TEMPLATE);
     if (!response.success) return;
-    const newNote: Note = response.data;
+    const newNote = response.data as Note;
     setNotesList([...notesList, newNote]);
     setSelectedItems(new Set([newNote._id]));
   };
-
   const handleDelButton = async () => {
     const newNotes: Note[] = notesList.filter((note) => !selectedItems.has(note._id));
     selectedItems.forEach(async (id) => await deleteNote(id));

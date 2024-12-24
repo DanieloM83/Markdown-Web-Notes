@@ -2,7 +2,7 @@ import { FC, useContext, useRef } from "react";
 import { useDraggable } from "../../../hooks";
 import { Note, styles } from ".";
 import { NotesContext } from "../../../providers";
-import { deleteImage, displayImage, editImage } from "../../../assets/images";
+import { deleteImage, displayImage, editImage, saveImage } from "../../../assets/images";
 import { deleteNote, NoteTitleSchema, NoteDescriptionSchema } from "../../../services/note";
 import { EditableTextArea, EditableTextInput } from "../";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,16 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
     if (data.description == newDesc) return;
     unpdateNotesList({ ...data, description: newDesc });
   };
+  const handleSaveNote = () => {
+    const noteblob = new Blob([data.content], { type: "text/plain" });
+    const filename = `Note-${data.title}.md`;
+
+    const aTag = document.createElement("a");
+
+    aTag.href = URL.createObjectURL(noteblob);
+    aTag.download = filename;
+    aTag.click();
+  };
 
   return (
     <div className={styles.note} ref={divRef} style={positionStyle} onDragStart={handleDragStart} onDragEnd={handleDragEndExt}>
@@ -62,7 +72,8 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
       <div className={styles.buttons}>
         <img src={deleteImage} onClick={handleDelButton} />
         <div>
-          <img className={styles.display_image} src={displayImage} onClick={() => navigate(`/display/${data._id}`)} />
+          <img className={styles.images_with_margin} src={saveImage} onClick={() => handleSaveNote()} />
+          <img className={styles.images_with_margin} src={displayImage} onClick={() => navigate(`/display/${data._id}`)} />
           <img src={editImage} onClick={() => navigate(`/edit/${data._id}`)} />
         </div>
       </div>

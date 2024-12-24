@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState, ReactNode, useContext } from "react";
 import { getNotes, Note, PartialNoteWithoutMetaType, updateNote } from "../services/note";
 import { AuthContext } from "./AuthProvider";
+import { Loading } from "../components/ui";
 
 interface NotesContextType {
   notesList: Note[];
@@ -81,7 +82,7 @@ export const NotesProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading loadingText="Fetching notes data..." />;
   }
 
   return <NotesContext.Provider value={{ notesList, setNotesList, selectedItems, setSelectedItems }}>{children}</NotesContext.Provider>;
