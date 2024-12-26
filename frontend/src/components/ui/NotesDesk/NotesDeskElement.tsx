@@ -36,7 +36,7 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
   const handleDelButton = async () => {
     const response = await deleteNote(data._id);
     if (!response.success) {
-      console.log(`Failed to delete note ${data._id}: ${response.message}`);
+      console.error(`Failed to delete note ${data._id}: ${response.message}`);
       return;
     }
     selectedItems.delete(data._id);

@@ -3,6 +3,9 @@ import { z } from "zod";
 export const NoteTitleSchema = z.string().max(25, "Wrong title format: Title must be shorter than or equal to 25 characters!");
 export const NoteDescriptionSchema = z.string().max(75, "Wrong description format: Description must be shorter than or equal to 75 characters!");
 
+export const NoteIdSchema = z.object({
+  _id: z.string().length(12, "Wrong ObjectID!"),
+});
 export const NoteWithoutMetaSchema = z.object({
   title: NoteTitleSchema,
   description: NoteDescriptionSchema,
@@ -12,6 +15,8 @@ export const NoteWithoutMetaSchema = z.object({
 });
 
 export const PartialNoteWithoutMetaSchema = NoteWithoutMetaSchema.partial();
+export const PartialNoteWithIdSchema = PartialNoteWithoutMetaSchema.merge(NoteIdSchema);
 
 export type NoteWithoutMetaType = z.infer<typeof NoteWithoutMetaSchema>;
 export type PartialNoteWithoutMetaType = z.infer<typeof PartialNoteWithoutMetaSchema>;
+export type PartialNoteWithIdType = z.infer<typeof PartialNoteWithIdSchema>;
