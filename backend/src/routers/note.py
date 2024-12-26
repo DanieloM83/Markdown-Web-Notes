@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from bson.errors import InvalidId
 
-from schemas.note import NoteSchema, NoteWithoutMetaSchema, PartialNoteWithoutMetaSchema
+from schemas.note import NoteSchema, NoteWithoutMetaSchema, PartialNoteWithIdSchema
 from routers.auth import get_user
 from schemas.user import UserSchema
 from services.note import NoteService
@@ -31,16 +31,15 @@ async def get_notes(
     return notes
 
 
-@router.patch("/{id_}")
-async def update_note(
-        id_: str,
-        note: PartialNoteWithoutMetaSchema,
+@router.patch("")
+async def update_notes_bulk(
+        notes: List[PartialNoteWithIdSchema],
         user: UserSchema = Depends(get_user),
         service: NoteService = Depends(NoteService)
 ):
     try:
-        result = await service.update_note(id_, note, user)
-        return {"success": result}
+        result = await service.update_notes_bulk(notes, user)
+        return result
     except InvalidId:
         raise InvalidObjectIdError
 

@@ -58,6 +58,10 @@ class PartialNoteWithoutMetaSchema(NoteWithoutMetaSchema):
         return super().model_dump(*args, exclude_unset=True, **kwargs)
 
 
+class PartialNoteWithIdSchema(PartialNoteWithoutMetaSchema, MongoObject):
+    pass
+
+
 class NoteAuthorIdSchema(BaseModel):
     author_id: str
 

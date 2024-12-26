@@ -4,7 +4,8 @@ from fastapi import Depends
 
 from repos.note import NoteRepository
 from schemas.default import ObjectIdSupported
-from schemas.note import NoteWithoutIdSchema, NoteWithoutMetaSchema, NoteSchema, PartialNoteWithoutMetaSchema
+from schemas.note import NoteWithoutIdSchema, NoteWithoutMetaSchema, NoteSchema, PartialNoteWithoutMetaSchema, \
+    PartialNoteWithIdSchema
 from schemas.user import UserSchema
 from exceptions.note import AuthorVerifyingError
 
@@ -28,6 +29,16 @@ class NoteService:
     async def update_note(self, id_: ObjectIdSupported, data: PartialNoteWithoutMetaSchema, user: UserSchema) -> bool:
         await self.verify_author(id_, user.id)
         return await self.repo.update_note(id_, data)
+
+    async def update_notes_bulk(self, notes: List[PartialNoteWithIdSchema], user: UserSchema):
+        result = {}
+        for note in notes:
+            try:
+                data = PartialNoteWithoutMetaSchema(**{k: v for k, v in note.model_dump().items() if k != "_id"})
+                result[str(note.id)] = "Success." if (await self.update_note(note.id, data, user)) else "No changes."
+            except AuthorVerifyingError as e:
+                result[str(note.id)] = e.detail
+        return result
 
     async def delete_note(self, id_: ObjectIdSupported, user: UserSchema) -> bool:
         await self.verify_author(id_, user.id)
