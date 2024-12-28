@@ -3,7 +3,8 @@ import pytest
 
 @pytest.fixture
 def post_info():
-    return {"title": "Note №1",
+    return {"_id": "abcdef123456",
+            "title": "Note №1",
             "description": "Test note number 1.",
             "content": "#Title\n##Subtitle",
             "color": "#FF6E6E",

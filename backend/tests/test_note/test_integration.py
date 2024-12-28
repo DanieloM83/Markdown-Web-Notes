@@ -1,6 +1,9 @@
+from config import settings
+
+
 def test_success_create(client, post_info, account_cookies):
-    client.cookies = account_cookies
-    response = client.post("/notes", json=post_info)
+    client.cookies.set(settings.SESSION_COOKIE_NAME, account_cookies[settings.SESSION_COOKIE_NAME])
+    response = client.post("/notes", json={k: v for k, v in post_info.items() if k != "_id"})
 
     assert response.status_code == 200
     assert response.json()
@@ -12,9 +15,9 @@ def test_success_create(client, post_info, account_cookies):
 
 
 def test_success_delete(client, post_info, account_cookies):
-    client.cookies = account_cookies
+    client.cookies.set(settings.SESSION_COOKIE_NAME, account_cookies[settings.SESSION_COOKIE_NAME])
 
-    response = client.post("/notes", json=post_info)
+    response = client.post("/notes", json={k: v for k, v in post_info.items() if k != "_id"})
     note_id = response.json()["_id"]
     assert response.status_code == 200
 
@@ -35,13 +38,13 @@ def test_success_delete(client, post_info, account_cookies):
 
 
 def test_success_update(client, post_info, account_cookies):
-    client.cookies = account_cookies
+    client.cookies.set(settings.SESSION_COOKIE_NAME, account_cookies[settings.SESSION_COOKIE_NAME])
 
-    response = client.post("/notes", json=post_info)
+    response = client.post("/notes", json={k: v for k, v in post_info.items() if k != "_id"})
     note_id = response.json()["_id"]
     assert response.status_code == 200
 
-    response = client.patch(f"/notes/{note_id}", json={"title": "New Title"})
+    response = client.patch(f"/notes", json=[{"_id": note_id, "title": "New Title"}])
 
     assert response.status_code == 200
     assert response.json()
