@@ -7,10 +7,6 @@
 }
 
 .desk > .note {
-  z-index: 50;
-  width: 100px;
-  height: 100px;
-
   display: flex;
   flex-direction: column;
 }

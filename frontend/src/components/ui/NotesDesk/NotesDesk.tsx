@@ -9,7 +9,7 @@ const NotesDesk: FC<NotesDeskProps> = () => {
 
   return (
     <div className={styles.desk}>
-      {notesList.map((note) => (
+      {[...notesList].reverse().map((note) => (
         <NotesDeskElement data={note} key={note._id} />
       ))}
     </div>

@@ -13,6 +13,35 @@ body {
   --background-color: #1b1b1b;
   --background-color2: #282828;
   --background-transparent-color: #1b1b1b3c;
+
+  --scrollbar-track-color: transparent;
+  --scrollbar-thumb-color: #3c3c3c;
+  --scrollbar-thumb-hover: #505050;
+  --scrollbar-thumb-active: #707070;
+
+  background-color: var(--background-color);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+::-webkit-scrollbar-thumb:active {
+  background: var(--scrollbar-thumb-active);
+}
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track-color);
 }
 
 .background {
@@ -82,15 +111,10 @@ body {
   width: 25px;
 }
 
-.back-footer {
-  position: absolute;
+.footer-button {
+  position: fixed;
   bottom: 0;
   left: 0;
-  width: 100vw;
-  height: 25px;
-  background-color: var(--background-transparent-color);
-}
-.back-footer .footer-button {
   padding: 7px;
   width: 75px;
   height: 25px;
@@ -98,6 +122,8 @@ body {
   p {
     font-size: 10px;
   }
+
+  z-index: 100;
 }
 
 .error {
@@ -150,7 +176,7 @@ body {
 }
 
 .modal-body {
-  background-color: #1a1a1a;
+  background-color: var(--background-color);
   padding: 30px;
   border-radius: 15px;
   max-width: 300px;

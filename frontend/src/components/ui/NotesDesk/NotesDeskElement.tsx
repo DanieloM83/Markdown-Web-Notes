@@ -12,23 +12,35 @@ interface NotesDeskElementProps {
 }
 
 const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
-  const positionStyle = {
+  const noteSize = 100;
+  const elementStyles = {
+    width: `${noteSize}px`,
+    height: `${noteSize}px`,
     left: `${data.coordinates[0] * 100}%`,
     top: `${data.coordinates[1] * 100}%`,
     backgroundColor: data.color,
-    boxShadow: `0 0 5px 2px ${data.color}`,
+    boxShadow: `0 0 3px 2px ${data.color}`,
+    zIndex: "1",
   };
 
   const divRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { notesList, setNotesList, selectedItems, setSelectedItems } = useContext(NotesContext);
-  const { handleDragStart, handleDragEnd } = useDraggable(divRef, data.coordinates[0], data.coordinates[1]);
+  const { handleDragStart, handleDragEnd } = useDraggable(divRef, data.coordinates[0], data.coordinates[1], noteSize, noteSize);
+
+  const handleDragStartExt = (event: React.DragEvent<HTMLElement>) => {
+    if (divRef.current) divRef.current.style.zIndex = "2";
+    handleDragStart(event);
+  };
 
   const handleDragEndExt = (event: React.DragEvent<HTMLElement>) => {
+    if (divRef.current) divRef.current.style.zIndex = "1";
     const x = divRef.current?.style.left || "0.00%";
     const y = divRef.current?.style.top || "0.00%";
     const newCords: [number, number] = [parseFloat(x.replace("%", "")) / 100 || 0, parseFloat(y.replace("%", "")) / 100 || 0];
-    const newNotes = notesList.map((note) => (note._id === data._id ? { ...note, coordinates: newCords } : note));
+    const newNotes = notesList.filter((note) => note._id != data._id);
+    const currNote = notesList.find((note) => note._id === data._id);
+    newNotes.unshift(currNote ? { ...currNote, coordinates: newCords } : { ...data, coordinates: newCords });
     setNotesList(newNotes);
     handleDragEnd(event);
   };
@@ -66,7 +78,7 @@ const NotesDeskElement: FC<NotesDeskElementProps> = ({ data }) => {
   };
 
   return (
-    <div className={styles.note} ref={divRef} style={positionStyle} onDragStart={handleDragStart} onDragEnd={handleDragEndExt}>
+    <div className={styles.note} ref={divRef} style={elementStyles} onDragStart={handleDragStartExt} onDragEnd={handleDragEndExt}>
       <EditableTextInput className={styles.title} value={data.title} callback={handleEditTitle} validator={NoteTitleSchema} />
       <EditableTextArea className={styles.description} value={data.description} callback={handleEditDescription} validator={NoteDescriptionSchema} />
       <div className={styles.buttons}>

@@ -8,7 +8,7 @@ interface UseDraggableReturn {
 
 type Position = { x: number; y: number };
 
-const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0): UseDraggableReturn => {
+const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0, width = 0, height = 0): UseDraggableReturn => {
   const [position, setPosition] = useState<Position>({ x: initialX, y: initialY });
   const [dragOffset, setDragOffset] = useState<Position>({ x: 0, y: 0 });
 
@@ -38,8 +38,10 @@ const useDraggable = (ref: RefObject<HTMLDivElement>, initialX = 0, initialY = 0
 
       const parentRect = ref.current?.parentElement?.getBoundingClientRect();
       if (ref.current && parentRect) {
-        const newX = Math.max(0, (event.clientX - dragOffset.x - parentRect.left) / parentRect.width);
-        const newY = Math.max(0, (event.clientY - dragOffset.y - parentRect.top) / parentRect.height);
+        let newX = Math.max(0, (event.clientX - dragOffset.x - parentRect.left) / parentRect.width);
+        let newY = Math.max(0, (event.clientY - dragOffset.y - parentRect.top) / parentRect.height);
+        newX = Math.min(1 - width / parentRect.width, newX);
+        newY = Math.min(1 - height / parentRect.height, newY);
 
         setPosition({ x: newX, y: newY });
         event.dataTransfer.setDragImage(EMPTYIMG, 0, 0);

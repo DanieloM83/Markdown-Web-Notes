@@ -11,11 +11,7 @@ const BackFooter: FC<BackFooterProps> = () => {
     navigate("/playground");
   };
 
-  return (
-    <footer className="back-footer">
-      <Button text="<< Back" className="footer-button" callback={buttonHandler} />
-    </footer>
-  );
+  return <Button text="<< Back" className="footer-button" callback={buttonHandler} />;
 };
 
 export default BackFooter;

@@ -7,6 +7,7 @@ https://github.com/sindresorhus/github-markdown-css
   --markdown-code-background-color: #151b23;
 
   background-color: var(--markdown-background-color);
+  overflow-y: scroll;
 }
 
 .markdown-code {
