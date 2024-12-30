@@ -35,7 +35,7 @@ const CredentialsForm: FC<CredentialsFormProps> = ({ onFormSubmit, buttonText = 
       </div>
 
       <Button className={styles.form_button} callback={handleSubmit(onFormSubmit)} text={buttonText} disabled={Object.keys(errors).length !== 0} />
-      {formStateErrors.root && <p className={`error ${styles.error}`}>{formStateErrors.root.message}</p>}
+      {formStateErrors?.root && <p className={`error ${styles.error}`}>{formStateErrors.root.message}</p>}
     </form>
   );
 };

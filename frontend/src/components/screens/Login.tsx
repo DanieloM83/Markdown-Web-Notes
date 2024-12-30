@@ -9,7 +9,7 @@ import { AuthContext } from "../../providers";
 interface LoginProps {}
 
 const Login: FC<LoginProps> = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     setError,
