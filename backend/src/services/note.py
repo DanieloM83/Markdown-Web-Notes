@@ -16,7 +16,7 @@ class NoteService:
 
     async def verify_author(self, note_id: ObjectIdSupported, author_id: ObjectIdSupported) -> None:
         note = await self.repo.get_note_by_id(note_id)
-        if not note or note.author_id != author_id.__str__():
+        if not note or note.author_id != str(author_id):
             raise AuthorVerifyingError()
 
     async def create_note(self, note: NoteWithoutMetaSchema, user: UserSchema) -> NoteSchema:
@@ -24,7 +24,7 @@ class NoteService:
         return await self.repo.create_note(note)
 
     async def get_users_notes(self, user: UserSchema) -> List[NoteSchema]:
-        return await self.repo.get_notes_by_author_id(user.id.__str__())
+        return await self.repo.get_notes_by_author_id(str(user.id))
 
     async def update_note(self, id_: ObjectIdSupported, data: PartialNoteWithoutMetaSchema, user: UserSchema) -> bool:
         await self.verify_author(id_, user.id)

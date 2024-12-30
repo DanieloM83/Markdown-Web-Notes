@@ -71,7 +71,7 @@ class NoteAuthorIdSchema(BaseModel):
         if type(value) not in [str, ObjectId, bytes]:
             raise ValueError("Wrong author_id data type!")
 
-        return ObjectId(value).__str__()
+        return str(ObjectId(value))
 
 
 class NoteWithoutIdSchema(NoteWithoutMetaSchema, NoteAuthorIdSchema):

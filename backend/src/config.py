@@ -1,4 +1,3 @@
-from pydantic import MongoDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -20,11 +19,11 @@ class Settings(BaseSettings):
     COOKIE_PARAMS: dict = {"secure": True, "samesite": "None", "httponly": True}
 
     @property
-    def mongo_dsn(self) -> MongoDsn:
+    def mongo_dsn(self) -> str:
         return f"mongodb+srv://{self.MONGO_USER}:{self.MONGO_PASS}@{self.MONGO_HOST}"
 
     @property
-    def redis_dsn(self) -> RedisDsn:
+    def redis_dsn(self) -> str:
         return f"redis://{self.REDIS_USER}:{self.REDIS_PASS}@{self.REDIS_HOST}:{self.REDIS_PORT}"
 
     model_config = SettingsConfigDict(env_file='.env')

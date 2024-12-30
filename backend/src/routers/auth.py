@@ -29,7 +29,7 @@ async def login(
                         **settings.COOKIE_PARAMS,
                         expires=settings.SESSION_COOKIE_EXPR)
     response.status_code = 200
-    return {"id": user_id.__str__()}
+    return {"id": str(user_id)}
 
 
 @router.post("/logout")
@@ -53,9 +53,9 @@ async def register(
         service: AuthService = Depends(AuthService)
 ):
     user_id = await service.register(data)
-    return {"id": user_id.__str__()}
+    return {"id": str(user_id)}
 
 
 @router.get("/current_user")
 async def get_current_user(user: UserSchema = Depends(get_user)):
-    return {"username": user.username, "id": user.id.__str__()}
+    return {"username": user.username, "id": str(user.id)}

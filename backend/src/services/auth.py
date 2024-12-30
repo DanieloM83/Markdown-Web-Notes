@@ -7,7 +7,7 @@ from argon2.exceptions import VerifyMismatchError
 
 from config import settings
 from schemas.user import UserCredentialsSchema, UserWithoutIDSchema, UserSchema
-from exceptions.auth import WrongUsernameOrPasswordError, RegisterNewUsernameConflictError
+from exceptions.auth import WrongUsernameOrPasswordError, RegisterNewUsernameConflictError, NotLoggedInError
 from dependencies import get_redis
 from database.redis import Redis
 from repos.user import UserRepository
@@ -45,7 +45,7 @@ class AuthService:
             raise WrongUsernameOrPasswordError()
         # Create new session:
         session_id = generate_session()
-        await self.redis.set(session_id, user.id.__str__(), ex=settings.SESSION_COOKIE_EXPR)
+        await self.redis.set(session_id, str(user.id), ex=settings.SESSION_COOKIE_EXPR)
         return user.id, session_id
 
     async def logout(self, session_id: str) -> None:
@@ -59,9 +59,13 @@ class AuthService:
         hashed_pass = hash_password(credentials.password)
         user_id = await self.repo.create_user(
             UserWithoutIDSchema.model_construct(username=credentials.username, password=hashed_pass))
-        return user_id.__str__()
+        return str(user_id)
 
-    async def get_user(self, session_id: str) -> UserSchema:
+    async def get_user(self, session_id: str) -> UserSchema | None:
         user_id = (await self.redis.get(session_id)).decode("utf-8")
+        if user_id is None:
+            raise NotLoggedInError
         user = await self.repo.get_user_by_id(str(user_id))
+        if user is None:
+            raise NotLoggedInError
         return user
