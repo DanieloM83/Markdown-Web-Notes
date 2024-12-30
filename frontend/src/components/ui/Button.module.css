@@ -1,0 +1,19 @@
+.button {
+  padding: 15px 30px 15px 30px;
+
+  background-color: var(--button-color);
+  border-radius: 15px;
+
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.button:hover {
+  background-color: var(--button-color_hover);
+}
+.button p {
+  color: var(--background-color);
+  font-weight: bold;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,36 @@
+.span,
+.input,
+.textarea,
+.spanarea {
+  font-family: Inter;
+  background-color: transparent;
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  resize: none;
+}
+
+.input,
+.span {
+  font-size: 16px;
+}
+
+.textarea,
+.spanarea {
+  font-size: 12px;
+}
+
+.span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+.spanarea {
+  padding: 2px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  word-wrap: break-word;
+}

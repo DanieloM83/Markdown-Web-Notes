@@ -1,0 +1,28 @@
+:root {
+  --menu-hiding-transition: 0.3s ease;
+  --menu-expand-width: 35vw;
+  --menu-expand-width-min: 350px;
+  --menu-hiding-transform: 85;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: max(var(--menu-expand-width), var(--menu-expand-width-min)) auto;
+  width: 100vw;
+  height: 100vh;
+  transition: grid-template-columns var(--menu-hiding-transition);
+}
+
+.expanded {
+  grid-template-columns: calc(max(var(--menu-expand-width-min), var(--menu-expand-width)) * (99 - var(--menu-hiding-transform)) / 100) auto;
+}
+
+.background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--background-color);
+  z-index: -999;
+}

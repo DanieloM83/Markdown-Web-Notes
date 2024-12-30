@@ -1,11 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import Router from "./components/routes/Router.tsx";
+import { AuthProvider, NotesProvider } from "./providers";
 
-import './assets/reset.css'
-import './assets/global.css'
+import "./assets/styles/reset.css";
+import "./assets/styles/global.css";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    
-  </StrictMode>,
-)
+createRoot(document.getElementById("root")!).render(
+  <AuthProvider>
+    <NotesProvider>
+      <StrictMode>
+        <Router />
+      </StrictMode>
+    </NotesProvider>
+  </AuthProvider>
+);

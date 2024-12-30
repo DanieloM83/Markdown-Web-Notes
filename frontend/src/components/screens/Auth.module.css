@@ -1,0 +1,36 @@
+.auth_content_container {
+  max-width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin: auto;
+  height: 100vh;
+}
+
+.title {
+  color: var(--text-color);
+  font-size: 74px;
+  top: -250px;
+}
+
+.auth_form {
+  width: 100%;
+  margin-top: 25px;
+}
+
+.link {
+  width: 100%;
+  margin-top: 5px;
+
+  p {
+    cursor: pointer;
+    color: #b3b3b3;
+    transition: all 0.3s ease;
+  }
+  p:hover {
+    color: var(--subtext-color);
+  }
+}
