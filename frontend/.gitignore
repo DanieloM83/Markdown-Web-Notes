@@ -1,5 +1,8 @@
 dist
 dist-ssr
+/certs/*.crt
+/certs/*.crs
+/certs/*.key
 *.local
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,windows,macos,linux,test

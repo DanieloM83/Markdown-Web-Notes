@@ -1,0 +1,24 @@
+.home_content_container {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+.title {
+  color: var(--text-color);
+  font-size: 74px;
+}
+
+.subtitle {
+  color: var(--subtext-color);
+  font-size: 32px;
+}
+
+.start_button {
+  margin-top: 25px;
+}

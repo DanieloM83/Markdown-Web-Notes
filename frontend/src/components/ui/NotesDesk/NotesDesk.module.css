@@ -1,0 +1,37 @@
+.desk {
+  position: relative;
+
+  height: 100vh;
+
+  background-color: var(--background-color);
+}
+
+.desk > .note {
+  display: flex;
+  flex-direction: column;
+}
+
+.note > .title,
+.note > .buttons {
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.note > .description {
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.note > .buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    width: 15px;
+    cursor: pointer;
+  }
+  .images_with_margin {
+    margin-right: 5px;
+  }
+}
